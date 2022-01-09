@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copyright © PHP Digital, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+
+<?php /** @var $block AlbertMage\Email\Block\Adminhtml\System\Config\ValidateConfigButton **/ ?>
+<?= $block->getButtonHtml() ?>
+
+<script type="text/x-magento-init">
+    {
+        "#emailsmtp_debug_result_button": {
+            "albertMageEmailSmtpValidateConfig": {
+                "postUrl":"<?= $block->escapeUrl($block->getAdminUrl()) ?>"
+            }
+        }
+    }
+</script>
