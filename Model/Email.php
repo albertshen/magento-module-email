@@ -22,9 +22,9 @@ use AlbertMage\Email\Helper\Data;
 
 class Email
 {
-    const XML_PATH_EMAIL_TEMPLATE_ZEND_TEST  = 'system/gmailsmtpapp/zend_email_template';
+    const XML_PATH_EMAIL_TEMPLATE_ZEND_TEST  = 'system/emailsmtp/zend_email_template';
 
-    const XML_PATH_EMAIL_TEMPLATE_MAGENTO_TEST  = 'system/gmailsmtpapp/magento_email_template';
+    const XML_PATH_EMAIL_TEMPLATE_MAGENTO_TEST  = 'system/emailsmtp/magento_email_template';
 
     /**
      * @var ScopeConfigInterface

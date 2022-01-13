@@ -58,7 +58,7 @@ class Data extends AbstractHelper
         }
 
         return $this->scopeConfig->isSetFlag(
-            'system/albertsmtpmail/active',
+            'system/emailsmtp/active',
             ScopeInterface::SCOPE_STORE,
             $store_id
         );
@@ -150,7 +150,7 @@ class Data extends AbstractHelper
     public function getConfigSetReplyTo($store_id = null)
     {
         return $this->scopeConfig->isSetFlag(
-            'system/albertsmtpmail/set_reply_to',
+            'system/emailsmtp/set_reply_to',
             ScopeInterface::SCOPE_STORE,
             $store_id
         );
@@ -216,7 +216,7 @@ class Data extends AbstractHelper
 
         //return value from core config
         return $this->getScopeConfigValue(
-            "system/albertsmtpmail/{$path}",
+            "system/emailsmtp/{$path}",
             $store_id
         );
     }

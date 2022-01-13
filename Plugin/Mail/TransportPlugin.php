@@ -12,8 +12,6 @@ use Magento\Framework\Mail\TransportInterface;
 use AlbertMage\Email\Helper\Data;
 use AlbertMage\Email\Model\Store;
 use AlbertMage\Email\Model\Smtp;
-use Zend_Mail;
-use Zend_Mail_Exception;
 use \Magento\Framework\Mail\EmailMessageInterface;
 
 class TransportPlugin
@@ -43,8 +41,6 @@ class TransportPlugin
     /**
      * @param TransportInterface $subject
      * @param Closure $proceed
-     * @throws MailException
-     * @throws Zend_Mail_Exception
      */
     public function aroundSendMessage(
         TransportInterface $subject,

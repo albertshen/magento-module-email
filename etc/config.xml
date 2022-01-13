@@ -8,7 +8,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <system>
-            <albertsmtp>
+            <emailsmtp>
                 <active>0</active>
                 <name>localhost</name>
                 <ssl>ssl</ssl>
@@ -19,9 +19,9 @@
                 <set_reply_to>1</set_reply_to>
                 <set_from>0</set_from>
                 <password backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-                <zend_email_template>magepal_smtp_zend_email_test</zend_email_template>
-                <magento_email_template>magepal_smtp_magento_email_test</magento_email_template>
-            </albertsmtp>
+                <zend_email_template>albertmage_smtp_zend_email_test</zend_email_template>
+                <magento_email_template>albertmage_smtp_magento_email_test</magento_email_template>
+            </emailsmtp>
         </system>
     </default>
 </config>

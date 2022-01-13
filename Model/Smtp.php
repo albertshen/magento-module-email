@@ -8,19 +8,18 @@ namespace AlbertMage\Email\Model;
 
 use Exception;
 use Magento\Framework\Exception\MailException;
+use Magento\Framework\Mail\EmailMessageInterface;
 use Magento\Framework\Mail\MessageInterface;
 use Magento\Framework\Phrase;
 use AlbertMage\Email\Helper\Data;
 use AlbertMage\Email\Model\Store;
-use Zend\Mail\AddressList;
-use Zend\Mail\Message;
-use Zend\Mail\Transport\Smtp as SmtpTransport;
-use Zend\Mail\Transport\SmtpOptions;
-use Magento\Framework\Mail\EmailMessageInterface;
+use Laminas\Mail\AddressList;
+use Laminas\Mail\Message;
+use Laminas\Mail\Transport\Smtp as SmtpTransport;
+use Laminas\Mail\Transport\SmtpOptions;
 
 /**
  * Class Smtp
- * For Magento >= 2.2.8
  */
 class Smtp
 {
@@ -70,49 +69,20 @@ class Smtp
      * @param $message
      * @return Message
      */
-    protected function convertMessage($message)
+    protected function convertMessage(Message $message)
     {
-        /**
-         * Issues in Zend Framework 2
-         * https://github.com/zendframework/zendframework/issues/2492
-         * https://github.com/zendframework/zendframework/issues/2492
-         */
-
         $encoding = 'utf-8';
-
-        try {
-            $reflect = new \ReflectionClass($message);
-            $zendMessageObject = $reflect->getProperty('zendMessage');
-            $zendMessageObject->setAccessible(true);
-
-            /** @var Message $zendMessage */
-            $zendMessage =  $zendMessageObject->getValue($message);
-
-            if ($message instanceof EmailMessageInterface) {
-                $encoding = $message->getEncoding();
-            } else {
-                $encoding = $zendMessage->getEncoding();
-            }
-
-            if (!$zendMessage instanceof Message) {
-                throw new MailException('Not instance of Message');
-            }
-        } catch (Exception $e) {
-            $zendMessage = Message::fromString($message->getRawMessage());
-        }
-
-        $zendMessage->setEncoding($encoding);
-
-        return $zendMessage;
+        $message = Message::fromString($message->getRawMessage());
+        $message->setEncoding($encoding);
+        return $message;
     }
 
     /**
      * @param MessageInterface | EmailMessageInterface $message
      * @throws MailException
      */
-    public function sendSmtpMessage(
-        $message
-    ) {
+    public function sendSmtpMessage(MessageInterface $message)
+    {
         $dataHelper = $this->dataHelper;
         $dataHelper->setStoreId($this->storeModel->getStoreId());
 
@@ -124,7 +94,7 @@ class Smtp
 
         foreach ($message->getHeaders()->toArray() as $headerKey => $headerValue) {
             $mailHeader = $message->getHeaders()->get($headerKey);
-            if ($mailHeader instanceof \Zend\Mail\Header\HeaderInterface) {
+            if ($mailHeader instanceof \Laminas\Mail\Header\HeaderInterface) {
                 $this->updateMailHeader($mailHeader);
             } elseif ($mailHeader instanceof \ArrayIterator) {
                 foreach ($mailHeader as $header) {
@@ -258,8 +228,8 @@ class Smtp
      */
     public function updateMailHeader($header)
     {
-        if ($header instanceof \Zend\Mail\Header\HeaderInterface) {
-            if (\Zend\Mime\Mime::isPrintable($header->getFieldValue())) {
+        if ($header instanceof \Laminas\Mail\Header\HeaderInterface) {
+            if (\Laminas\Mime\Mime::isPrintable($header->getFieldValue())) {
                 $header->setEncoding('ASCII');
             } else {
                 $header->setEncoding('utf-8');
