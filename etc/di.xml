@@ -1,17 +1,21 @@
 <?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Magento\Widget\Model\Widget">
-        <plugin name="image_uploader_solve" type="AlbertMage\Cms\Plugin\Widget" sortOrder="1"/>
-    </type>
     <type name="Magento\Framework\Mail\TransportInterface">
         <plugin sortOrder="100" name="albertMageEmailTransportInterface" type="AlbertMage\Email\Plugin\Mail\TransportPlugin"/>
+    </type>
+    <type name="AlbertMage\Email\Model\Transport">
+        <arguments>
+            <argument name="providers" xsi:type="array">
+                <item name="smtp" xsi:type="string">AlbertMage\Email\Model\Transport\Smtp</item>
+            </argument>
+        </arguments>
     </type>
     <type name="Magento\Framework\Mail\Template\TransportBuilder">
         <plugin sortOrder="1" name="albertMageEmailTransportBuilder" type="AlbertMage\Email\Plugin\Mail\Template\TransportBuilderPlugin"/>
     </type>
-    <type name="Magento\Framework\Mail\Template\TransportBuilderByStore">
+<!--     <type name="Magento\Framework\Mail\Template\TransportBuilderByStore">
         <plugin sortOrder="1" name="albertMageEmailTransportBuilderByStore" type="AlbertMage\Email\Plugin\Mail\Template\TransportBuilderByStorePlugin"/>
-    </type>
+    </type> -->
     <type name="Magento\Config\Model\Config\TypePool">
         <arguments>
             <argument name="environment" xsi:type="array">

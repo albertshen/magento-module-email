@@ -47,7 +47,7 @@ class TransportBuilderByStorePlugin
         TransportBuilderByStore $subject,
         $from,
         $store
-    ) {
+    ) {var_dump($store);exit;
         if (!$this->storeModel->getStoreId()) {
             $this->storeModel->setStoreId($store);
         }

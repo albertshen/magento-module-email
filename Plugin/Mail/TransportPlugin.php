@@ -9,10 +9,10 @@ use Closure;
 use Magento\Framework\Exception\MailException;
 use Magento\Framework\Mail\Message;
 use Magento\Framework\Mail\TransportInterface;
+use Magento\Framework\Mail\EmailMessageInterface;
+use Magento\Framework\App\ObjectManager;
 use AlbertMage\Email\Helper\Data;
-use AlbertMage\Email\Model\Store;
-use AlbertMage\Email\Model\Smtp;
-use \Magento\Framework\Mail\EmailMessageInterface;
+use AlbertMage\Email\Model\Transport;
 
 class TransportPlugin
 {
@@ -22,20 +22,12 @@ class TransportPlugin
     protected $dataHelper;
 
     /**
-     * @var Store
-     */
-    protected $storeModel;
-
-    /**
      * @param Data $dataHelper
-     * @param Store $storeModel
      */
     public function __construct(
-        Data $dataHelper,
-        Store $storeModel
+        Data $dataHelper
     ) {
         $this->dataHelper = $dataHelper;
-        $this->storeModel = $storeModel;
     }
 
     /**
@@ -47,15 +39,12 @@ class TransportPlugin
         Closure $proceed
     ) {
         if ($this->dataHelper->isActive()) {
-            if (method_exists($subject, 'getStoreId')) {
-                $this->storeModel->setStoreId($subject->getStoreId());
-            }
-
+            
             $message = $subject->getMessage();
 
             if ($message instanceof Message || $message instanceof EmailMessageInterface) {
-                $smtp = new Smtp($this->dataHelper, $this->storeModel);
-                $smtp->sendSmtpMessage($message);
+                $transport = ObjectManager::getInstance()->get(Transport::class);
+                $transport->send($message);
             } else {
                 $proceed();
             }

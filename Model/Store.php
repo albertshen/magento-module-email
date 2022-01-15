@@ -9,7 +9,7 @@ namespace AlbertMage\Email\Model;
 class Store
 {
     /** @var int/null  */
-    protected $store_id = null;
+    protected $storeId = null;
 
     /**
      * @var null
@@ -21,16 +21,16 @@ class Store
      */
     public function getStoreId()
     {
-        return $this->store_id;
+        return $this->storeId;
     }
 
     /**
-     * @param $store_id
+     * @param $storeId
      * @return $this
      */
-    public function setStoreId($store_id)
+    public function setStoreId($storeId)
     {
-        $this->store_id = $store_id;
+        $this->storeId = $storeId;
         return $this;
     }
 

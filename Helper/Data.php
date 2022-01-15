@@ -11,16 +11,21 @@ use Magento\Store\Model\ScopeInterface;
 
 class Data extends AbstractHelper
 {
-    /**
-     * @var null $storeId
-     */
-    protected $storeId = null;
 
-    /** @var bool $testMode */
+    /** 
+     * @var bool $testMode 
+     */
     protected $testMode = false;
 
-    /** @var array $testConfig */
+    /** 
+     * @var array $testConfig 
+     */
     protected $testConfig = [];
+
+    /**
+     * @var $storeId
+     */
+    protected $storeId = null;
 
     /**
      * @param null $key
@@ -51,16 +56,12 @@ class Data extends AbstractHelper
      * @param null $store_id
      * @return bool
      */
-    public function isActive($store_id = null)
+    public function isActive()
     {
-        if ($store_id == null && $this->getStoreId() > 0) {
-            $store_id = $this->getStoreId();
-        }
-
         return $this->scopeConfig->isSetFlag(
             'system/emailsmtp/active',
             ScopeInterface::SCOPE_STORE,
-            $store_id
+            $this->storeId
         );
     }
 
@@ -70,9 +71,9 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return string
      */
-    public function getConfigName($store_id = null)
+    public function getConfigName()
     {
-        return $this->getConfigValue('name', $store_id);
+        return $this->getConfigValue('name');
     }
 
     /**
@@ -81,9 +82,9 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return string
      */
-    public function getConfigPassword($store_id = null)
+    public function getConfigPassword()
     {
-        return $this->getConfigValue('password', $store_id);
+        return $this->getConfigValue('password');
     }
 
     /**
@@ -92,9 +93,9 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return string
      */
-    public function getConfigUsername($store_id = null)
+    public function getConfigUsername()
     {
-        return $this->getConfigValue('username', $store_id);
+        return $this->getConfigValue('username');
     }
 
     /**
@@ -103,9 +104,9 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return string
      */
-    public function getConfigAuth($store_id = null)
+    public function getConfigAuth()
     {
-        return $this->getConfigValue('auth', $store_id);
+        return $this->getConfigValue('auth');
     }
 
     /**
@@ -114,9 +115,9 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return string
      */
-    public function getConfigSsl($store_id = null)
+    public function getConfigSsl()
     {
-        return $this->getConfigValue('ssl', $store_id);
+        return $this->getConfigValue('ssl');
     }
 
     /**
@@ -125,9 +126,9 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return string
      */
-    public function getConfigSmtpHost($store_id = null)
+    public function getConfigSmtpHost()
     {
-        return $this->getConfigValue('smtphost', $store_id);
+        return $this->getConfigValue('smtphost');
     }
 
     /**
@@ -136,9 +137,9 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return string
      */
-    public function getConfigSmtpPort($store_id = null)
+    public function getConfigSmtpPort()
     {
-        return $this->getConfigValue('smtpport', $store_id);
+        return $this->getConfigValue('smtpport');
     }
 
     /**
@@ -147,12 +148,12 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return bool
      */
-    public function getConfigSetReplyTo($store_id = null)
+    public function getConfigSetReplyTo()
     {
         return $this->scopeConfig->isSetFlag(
             'system/emailsmtp/set_reply_to',
             ScopeInterface::SCOPE_STORE,
-            $store_id
+            $this->storeId
         );
     }
 
@@ -162,9 +163,9 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return int
      */
-    public function getConfigSetReturnPath($store_id = null)
+    public function getConfigSetReturnPath()
     {
-        return (int) $this->getConfigValue('set_return_path', $store_id);
+        return (int) $this->getConfigValue('set_return_path');
     }
 
     /**
@@ -173,9 +174,9 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return string
      */
-    public function getConfigReturnPathEmail($store_id = null)
+    public function getConfigReturnPathEmail()
     {
-        return $this->getConfigValue('return_path_email', $store_id);
+        return $this->getConfigValue('return_path_email');
     }
 
     /**
@@ -184,9 +185,9 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return string
      */
-    public function getConfigSetFrom($store_id = null)
+    public function getConfigSetFrom()
     {
-        return  (int) $this->getConfigValue('set_from', $store_id);
+        return  (int) $this->getConfigValue('set_from');
     }
 
     /**
@@ -195,9 +196,9 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return string
      */
-    public function getConfigCustomFromEmail($store_id = null)
+    public function getConfigCustomFromEmail()
     {
-        return  $this->getConfigValue('custom_from_email', $store_id);
+        return  $this->getConfigValue('custom_from_email');
     }
 
     /**
@@ -207,7 +208,7 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return string
      */
-    public function getConfigValue($path, $store_id = null)
+    public function getConfigValue($path)
     {
         //send test mail
         if ($this->isTestMode()) {
@@ -216,8 +217,7 @@ class Data extends AbstractHelper
 
         //return value from core config
         return $this->getScopeConfigValue(
-            "system/emailsmtp/{$path}",
-            $store_id
+            "system/emailsmtp/{$path}"
         );
     }
 
@@ -226,18 +226,14 @@ class Data extends AbstractHelper
      * @param ScopeInterface::SCOPE_STORE $store
      * @return mixed
      */
-    public function getScopeConfigValue($path, $store_id = null)
+    public function getScopeConfigValue($path)
     {
-        //use global store id
-        if ($store_id === null && $this->getStoreId() > 0) {
-            $store_id = $this->getStoreId();
-        }
 
         //return value from core config
         return $this->scopeConfig->getValue(
             $path,
             ScopeInterface::SCOPE_STORE,
-            $store_id
+            $this->storeId
         );
     }
 

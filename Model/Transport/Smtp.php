@@ -4,15 +4,15 @@
  * See COPYING.txt for license details.
  */
 
-namespace AlbertMage\Email\Model;
+namespace AlbertMage\Email\Model\Transport;
 
-use Exception;
+use AlbertMage\Email\Helper\Data;
+use AlbertMage\Email\Model\Store;
+use AlbertMage\Email\Model\TransportInterface;
 use Magento\Framework\Exception\MailException;
 use Magento\Framework\Mail\EmailMessageInterface;
 use Magento\Framework\Mail\MessageInterface;
 use Magento\Framework\Phrase;
-use AlbertMage\Email\Helper\Data;
-use AlbertMage\Email\Model\Store;
 use Laminas\Mail\AddressList;
 use Laminas\Mail\Message;
 use Laminas\Mail\Transport\Smtp as SmtpTransport;
@@ -21,7 +21,7 @@ use Laminas\Mail\Transport\SmtpOptions;
 /**
  * Class Smtp
  */
-class Smtp
+class Smtp implements TransportInterface
 {
     /**
      * @var Data
@@ -35,7 +35,6 @@ class Smtp
 
     /**
      * @param Data $dataHelper
-     * @param Store $storeModel
      */
     public function __construct(
         Data $dataHelper,
@@ -43,53 +42,19 @@ class Smtp
     ) {
         $this->dataHelper = $dataHelper;
         $this->storeModel = $storeModel;
+        $this->dataHelper->setStoreId($storeModel->getStoreId());
     }
 
     /**
-     * @param Data $dataHelper
-     * @return Smtp
+     * @inheritdoc
      */
-    public function setDataHelper(Data $dataHelper)
+    public function send(MessageInterface $message)
     {
-        $this->dataHelper = $dataHelper;
-        return $this;
-    }
 
-    /**
-     * @param Store $storeModel
-     * @return Smtp
-     */
-    public function setStoreModel(Store $storeModel)
-    {
-        $this->storeModel = $storeModel;
-        return $this;
-    }
-
-    /**
-     * @param $message
-     * @return Message
-     */
-    protected function convertMessage(Message $message)
-    {
-        $encoding = 'utf-8';
-        $message = Message::fromString($message->getRawMessage());
-        $message->setEncoding($encoding);
-        return $message;
-    }
-
-    /**
-     * @param MessageInterface | EmailMessageInterface $message
-     * @throws MailException
-     */
-    public function sendSmtpMessage(MessageInterface $message)
-    {
-        $dataHelper = $this->dataHelper;
-        $dataHelper->setStoreId($this->storeModel->getStoreId());
-
-        /** @var Message $message */
         $message = $this->convertMessage($message);
 
         $this->setReplyToPath($message);
+
         $this->setSender($message);
 
         foreach ($message->getHeaders()->toArray() as $headerKey => $headerValue) {
@@ -107,7 +72,7 @@ class Smtp
             $transport = new SmtpTransport();
             $transport->setOptions($this->getSmtpOptions());
             $transport->send($message);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new MailException(
                 new Phrase($e->getMessage()),
                 $e
@@ -116,25 +81,37 @@ class Smtp
     }
 
     /**
+     * @param MessageInterface $message
+     * @return Message
+     */
+    private function convertMessage(MessageInterface $message)
+    {
+        $encoding = 'utf-8';
+        $message = Message::fromString($message->getRawMessage());
+        $message->setEncoding($encoding);
+        return $message;
+    }
+
+    /**
      * @param Message $message
      */
-    protected function setSender($message)
+    private function setSender(Message $message)
     {
-        $dataHelper = $this->dataHelper;
+
         //Set from address
-        switch ($dataHelper->getConfigSetFrom()) {
+        switch ($this->dataHelper->getConfigSetFrom()) {
             case 1:
                 $setFromEmail = $message->getFrom()->count() ? $message->getFrom() : $this->getFromEmailAddress();
                 break;
             case 2:
-                $setFromEmail = $dataHelper->getConfigCustomFromEmail();
+                $setFromEmail = $this->dataHelper->getConfigCustomFromEmail();
                 break;
             default:
                 $setFromEmail = null;
                 break;
         }
 
-        if ($setFromEmail !== null && $dataHelper->getConfigSetFrom()) {
+        if ($setFromEmail !== null) {
             if (is_string($setFromEmail)) {
                 $name = $this->getFromName();
                 $message->setFrom(trim($setFromEmail), $name);
@@ -156,24 +133,23 @@ class Smtp
     /**
      * @param Message $message
      */
-    protected function setReplyToPath($message)
+    private function setReplyToPath(Message $message)
     {
-        $dataHelper = $this->dataHelper;
 
         //Set reply-to path
-        switch ($dataHelper->getConfigSetReturnPath()) {
+        switch ($this->dataHelper->getConfigSetReturnPath()) {
             case 1:
                 $returnPathEmail = $message->getFrom()->count() ? $message->getFrom() : $this->getFromEmailAddress();
                 break;
             case 2:
-                $returnPathEmail = $dataHelper->getConfigReturnPathEmail();
+                $returnPathEmail = $this->dataHelper->getConfigReturnPathEmail();
                 break;
             default:
                 $returnPathEmail = null;
                 break;
         }
 
-        if (!$message->getReplyTo()->count() && $dataHelper->getConfigSetReplyTo()) {
+        if (!$message->getReplyTo()->count() && $this->dataHelper->getConfigSetReplyTo()) {
             if (is_string($returnPathEmail)) {
                 $name = $this->getFromName();
                 $message->setReplyTo(trim($returnPathEmail), $name);
@@ -188,30 +164,29 @@ class Smtp
     /**
      * @return SmtpOptions
      */
-    protected function getSmtpOptions()
+    private function getSmtpOptions()
     {
-        $dataHelper = $this->dataHelper;
 
         //set config
         $options   = new SmtpOptions([
-            'name' => $dataHelper->getConfigName(),
-            'host' => $dataHelper->getConfigSmtpHost(),
-            'port' => $dataHelper->getConfigSmtpPort(),
+            'name' => $this->dataHelper->getConfigName(),
+            'host' => $this->dataHelper->getConfigSmtpHost(),
+            'port' => $this->dataHelper->getConfigSmtpPort(),
         ]);
 
         $connectionConfig = [];
 
-        $auth = strtolower($dataHelper->getConfigAuth());
+        $auth = strtolower($this->dataHelper->getConfigAuth());
         if ($auth != 'none') {
             $options->setConnectionClass($auth);
 
             $connectionConfig = [
-                'username' => $dataHelper->getConfigUsername(),
-                'password' => $dataHelper->getConfigPassword()
+                'username' => $this->dataHelper->getConfigUsername(),
+                'password' => $this->dataHelper->getConfigPassword()
             ];
         }
 
-        $ssl = $dataHelper->getConfigSsl();
+        $ssl = $this->dataHelper->getConfigSsl();
         if ($ssl != 'none') {
             $connectionConfig['ssl'] = $ssl;
         }
@@ -226,7 +201,7 @@ class Smtp
     /**
      * @param $header
      */
-    public function updateMailHeader($header)
+    private function updateMailHeader($header)
     {
         if ($header instanceof \Laminas\Mail\Header\HeaderInterface) {
             if (\Laminas\Mime\Mime::isPrintable($header->getFieldValue())) {
@@ -240,18 +215,18 @@ class Smtp
     /**
      * @return string
      */
-    public function getFromEmailAddress()
+    private function getFromEmailAddress()
     {
         $result = $this->storeModel->getFrom();
-        return isset($result['email']) ? $result['email'] : '';
+        return $result['email'] ?? '';
     }
 
     /**
      * @return string
      */
-    public function getFromName()
+    private function getFromName()
     {
         $result = $this->storeModel->getFrom();
-        return isset($result['name']) ? $result['name'] : '';
+        return $result['name'] ?? '';
     }
 }

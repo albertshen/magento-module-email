@@ -104,12 +104,13 @@ class ValidateConfig extends Template
      */
     public function setStoreId($id)
     {
+        $this->_dataHelper->setStoreId($id);
         $this->storeId = $id;
         return $this;
     }
 
     /**
-     * @return int \ null
+     * @return int
      */
     public function getStoreId()
     {
@@ -156,7 +157,7 @@ class ValidateConfig extends Template
         $fields = array_keys($this->configFields);
         foreach ($fields as $field) {
             if (!array_key_exists($field, $formPostArray)) {
-                $this->setConfig($field, $this->_dataHelper->getConfigValue($field), $this->getStoreId());
+                $this->setConfig($field, $this->_dataHelper->getConfigValue($field));
             } else {
                 $this->setConfig($field, $request->getPost($field));
             }
@@ -164,7 +165,7 @@ class ValidateConfig extends Template
 
         //if password mask (6 stars)
         if ($this->getConfig('password') === '******') {
-            $password = $this->_dataHelper->getConfigPassword($this->getStoreId());
+            $password = $this->_dataHelper->getConfigPassword();
             $this->setConfig('password', $password);
         }
 
@@ -177,11 +178,12 @@ class ValidateConfig extends Template
     protected function init()
     {
         $request = $this->getRequest();
+
         $this->setStoreId($request->getParam('store', null));
 
         $this->loadDefaultConfig();
 
-        $this->toAddress = $this->getConfig('email') ? $this->getConfig('email') : $this->getConfig('username');
+        $this->toAddress = $this->getConfig('email') ?? $this->getConfig('username');
 
         $this->fromAddress = trim($this->getConfig('from_email'));
 
@@ -283,14 +285,14 @@ class ValidateConfig extends Template
         $this->fromAddress = $from;
 
         //Create email
-        $name = 'Test from MagePal SMTP';
+        $name = 'Test from AlbertMage SMTP';
         $mail = new Zend_Mail();
         $mail->setFrom($this->fromAddress, $name);
         $mail->addTo($this->toAddress, $this->toAddress);
-        $mail->setSubject('Hello from MagePal SMTP (1 of 2)');
+        $mail->setSubject('Hello from AlbertMage SMTP');
 
         $htmlBody = $this->_email->setTemplateVars(['hash' => $this->hash])->getEmailBody();
-
+// var_dump($smtpHost, $smtpConf, $this->fromAddress, $name, $this->toAddress, $this->toAddress, $htmlBody);exit;
         $mail->setBodyHtml($htmlBody);
 
         $result = $this->error();
@@ -315,14 +317,13 @@ class ValidateConfig extends Template
         $result = $this->error();
 
         $this->_dataHelper->setTestMode(true);
-        $this->_dataHelper->setStoreId($this->getStoreId());
         $this->_dataHelper->setTestConfig($this->getConfig());
 
         try {
             $this->_email
                 ->setTemplateVars(['hash' => $this->hash])
                 ->send(
-                    ['email' => $this->fromAddress, 'name' => 'Test from MagePal SMTP'],
+                    ['email' => $this->fromAddress, 'name' => 'Test from AlbertMage SMTP'],
                     ['email' => $this->toAddress, 'name' => $this->toAddress]
                 );
         } catch (Exception $e) {
