@@ -4,7 +4,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="albert_email">
+        <section id="albert_email" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="0">
             <class>separator-top</class>
             <label>Email</label>
             <tab>albertmage</tab>
