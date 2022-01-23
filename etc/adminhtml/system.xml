@@ -4,7 +4,11 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="system">
+        <section id="albert_email">
+            <class>separator-top</class>
+            <label>Email</label>
+            <tab>albertmage</tab>
+            <resource>AlbertMage_Email::config</resource>
             <group id="emailsmtp" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>SMTP Configuration and Settings (Gmail/Google/AWS/Office365 etc)</label>
                 <comment>
@@ -55,7 +59,7 @@
                 </field>
                 <field id="auth" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Authentication method</label>
-                    <source_model>Magento\Config\Model\Config\Source\Email\Smtpauth</source_model>
+                    <source_model>AlbertMage\Email\Model\Config\Source\Authtype</source_model>
                     <comment>Default: login</comment>
                     <depends>
                         <field id="*/*/active">1</field>

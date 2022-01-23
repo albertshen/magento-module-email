@@ -13,7 +13,7 @@
 				<resource id="Magento_Backend::stores">
 					<resource id="Magento_Backend::stores_settings">
 						<resource id="Magento_Config::config">
-							<resource id="AlbertMage_Email::albertmage_email" title="Albert SMTP App"/>
+							<resource id="AlbertMage_Email::config" title="Albert SMTP App"/>
 						</resource>
 					</resource>
 				</resource>
