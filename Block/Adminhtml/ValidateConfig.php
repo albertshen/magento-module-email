@@ -9,8 +9,8 @@ use Exception;
 use Magento\Backend\Block\Template;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Validator\EmailAddress;
+use Magento\Framework\App\ObjectManager;
 use AlbertMage\Email\Helper\Data;
-use AlbertMage\Email\Model\Email;
 use Zend_Mail;
 use Zend_Mail_Exception;
 use Zend_Mail_Transport_Smtp;
@@ -18,15 +18,15 @@ use Zend_Validate_Exception;
 
 class ValidateConfig extends Template
 {
+
+    const EMAIL_TEMPLATE_TPL_ID_ZEND_TEST  = 'albertmage_smtp_zend_email_test';
+
+    const EMAIL_TEMPLATE_TPL_ID_MAGENTO_TEST  = 'albertmage_smtp_magento_email_test';
+
     /**
      * @var Data
      */
     protected $_dataHelper;
-
-    /**
-     * @var Email
-     */
-    protected $_email;
 
     /**
      * @var string
@@ -79,20 +79,17 @@ class ValidateConfig extends Template
      * EmailTest constructor.
      * @param Context $context
      * @param Data $dataHelper
-     * @param Email $email
      * @param EmailAddress $emailAddressValidator
      * @param array $data
      */
     public function __construct(
         Context $context,
         Data $dataHelper,
-        Email $email,
         EmailAddress $emailAddressValidator,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->_dataHelper = $dataHelper;
-        $this->_email = $email;
         $this->emailAddressValidator = $emailAddressValidator;
 
         $this->init();
@@ -291,8 +288,8 @@ class ValidateConfig extends Template
         $mail->addTo($this->toAddress, $this->toAddress);
         $mail->setSubject('Hello from AlbertMage SMTP');
 
-        $htmlBody = $this->_email->setTemplateVars(['hash' => $this->hash])->getEmailBody();
-// var_dump($smtpHost, $smtpConf, $this->fromAddress, $name, $this->toAddress, $this->toAddress, $htmlBody);exit;
+        $htmlBody = $this->getEmailBody(['hash' => $this->hash]);
+
         $mail->setBodyHtml($htmlBody);
 
         $result = $this->error();
@@ -320,12 +317,19 @@ class ValidateConfig extends Template
         $this->_dataHelper->setTestConfig($this->getConfig());
 
         try {
-            $this->_email
+            $transportBuilder = ObjectManager::getInstance()->create(\Magento\Framework\Mail\Template\TransportBuilder::class);
+            $transportBuilder->setTemplateIdentifier(self::EMAIL_TEMPLATE_TPL_ID_MAGENTO_TEST)
+                ->setTemplateOptions(
+                    [
+                        'area' => 'adminhtml',
+                        'store' => 1,
+                    ]
+                )
                 ->setTemplateVars(['hash' => $this->hash])
-                ->send(
-                    ['email' => $this->fromAddress, 'name' => 'Test from AlbertMage SMTP'],
-                    ['email' => $this->toAddress, 'name' => $this->toAddress]
-                );
+                ->setFrom(['email' => $this->toAddress, 'name' => $this->toAddress])
+                ->addTo($this->toAddress, $this->toAddress)
+                ->getTransport()
+                ->sendMessage();
         } catch (Exception $e) {
             $result = $this->error(true, __($e->getMessage()));
         }
@@ -333,6 +337,24 @@ class ValidateConfig extends Template
         $this->_dataHelper->setTestMode(false);
 
         return $result;
+    }
+
+    /**
+     * Get template
+     *
+     * @return TemplateInterface
+     */
+    protected function getEmailBody($templateVars)
+    {
+
+        $templateFactory = ObjectManager::getInstance()->create(\Magento\Framework\Mail\Template\FactoryInterface::class);
+        return $templateFactory->get(self::EMAIL_TEMPLATE_TPL_ID_ZEND_TEST)
+            ->setVars($templateVars)
+            ->setOptions([
+                'area' => 'adminhtml',
+                'store' => 1
+            ])
+            ->processTemplate();
     }
 
     /**

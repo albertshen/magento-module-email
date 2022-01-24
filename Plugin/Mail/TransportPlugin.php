@@ -12,7 +12,7 @@ use Magento\Framework\Mail\TransportInterface;
 use Magento\Framework\Mail\EmailMessageInterface;
 use Magento\Framework\App\ObjectManager;
 use AlbertMage\Email\Helper\Data;
-use AlbertMage\Email\Model\Transport;
+use AlbertMage\Email\Model\Smtp;
 
 class TransportPlugin
 {
@@ -43,7 +43,7 @@ class TransportPlugin
             $message = $subject->getMessage();
 
             if ($message instanceof Message || $message instanceof EmailMessageInterface) {
-                $transport = ObjectManager::getInstance()->get(Transport::class);
+                $transport = ObjectManager::getInstance()->get(Smtp::class);
                 $transport->send($message);
             } else {
                 $proceed();

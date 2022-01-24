@@ -166,6 +166,68 @@
                     </field>
                 </group>
             </group>
+
+
+
+            <group id="setting" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>SMS Configuration and Settings (Yunpian/Aliyun etc)</label>
+                <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="gateway" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gateway</label>
+                    <source_model>AlbertMage\Email\Model\Config\Source\Authtype</source_model>
+                    <comment>Default: Yunpian</comment>
+                    <depends>
+                        <field id="*/setting/active">1</field>
+                    </depends>
+                </field>
+            </group>
+
+
+
+            <group id="yunpian" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="100">
+                <depends>
+                    <field id="*/setting/active">1</field>
+                    <field id="*/setting/gateway">ssl</field>
+                </depends>
+                <label>Yuanpian Setting</label>
+                <attribute type="expanded">1</attribute>
+                <field id="apikey" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Api Key</label>
+                    <comment>Api Key</comment>
+                </field>
+                <group id="templates" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="100">
+                    <label>SMS Templates</label>
+                    <attribute type="expanded">1</attribute>
+                    <group id="order" translate="label" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="100">
+                        <label>Order</label>
+                        <attribute type="expanded">0</attribute>
+                        <!-- New Order Confirmation -->
+                        <field id="new_order_confirmation_heading" translate="label" sortOrder="1" showInStore="1" showInWebsite="1" showInDefault="1">
+                            <label>New Order Confirmation</label>
+                            <frontend_model>Magento\Config\Block\System\Config\Form\Field\Heading</frontend_model>
+                        </field>
+                        <field id="new_order_confirmation_enabled" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enabled</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        </field>
+                        <field id="new_order_confirmation_template_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Template Id</label>
+                            <comment>SMS Template Id</comment>
+                        </field>
+                        <field id="new_order_confirmation_message" translate="comment label" sortOrder="4" type="textarea" showInStore="1" showInWebsite="1" showInDefault="1">
+                            <label>Message Preview</label>
+                            <comment>SMS Message Preview</comment>
+                        </field>
+                    </group>
+                </group>
+            </group>
+
+
+
+
         </section>
     </system>
 </config>
