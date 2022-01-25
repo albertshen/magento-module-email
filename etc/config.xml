@@ -7,7 +7,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
-        <system>
+        <albert_email>
             <emailsmtp>
                 <active>0</active>
                 <name>localhost</name>
@@ -22,6 +22,6 @@
                 <zend_email_template>albertmage_smtp_zend_email_test</zend_email_template>
                 <magento_email_template>albertmage_smtp_magento_email_test</magento_email_template>
             </emailsmtp>
-        </system>
+        </albert_email>
     </default>
 </config>

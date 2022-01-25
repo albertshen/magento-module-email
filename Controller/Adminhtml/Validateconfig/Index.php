@@ -14,7 +14,7 @@ class Index extends Action
     /**
      * Authorization level of a basic admin session
      */
-    const ADMIN_RESOURCE = 'AlbertMage_Email::config';
+    const ADMIN_RESOURCE = 'AlbertMage_Email::albertmage_email';
     
     /**
      * Index action
