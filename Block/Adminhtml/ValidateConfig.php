@@ -287,7 +287,6 @@ class ValidateConfig extends Template
         $mail->setFrom($this->fromAddress, $name);
         $mail->addTo($this->toAddress, $this->toAddress);
         $mail->setSubject('Hello from AlbertMage SMTP');
-
         $htmlBody = $this->getEmailBody(['hash' => $this->hash]);
 
         $mail->setBodyHtml($htmlBody);

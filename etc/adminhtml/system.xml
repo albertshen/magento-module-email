@@ -57,9 +57,9 @@
                         <field id="*/*/active">1</field>
                     </depends>
                 </field>
-                <field id="auth" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                <field id="auth" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Authentication method</label>
-                    <source_model>AlbertMage\Email\Model\Config\Source\Authtype</source_model>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Smtpauth</source_model>
                     <comment>Default: login</comment>
                     <depends>
                         <field id="*/*/active">1</field>

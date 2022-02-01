@@ -14,7 +14,7 @@ define([
         };
 
         /** global var configForm **/
-        configForm.find('[id^=system_emailsmtp]').find(':input').serializeArray().map(function (field) {
+        configForm.find('[id^=albert_email_emailsmtp]').find(':input').serializeArray().map(function (field) {
             var name = field.name.match(/groups\[emailsmtp\]?(\[groups\]\[debug\])?\[fields\]\[(.*)\]\[value]/);
 
             /**

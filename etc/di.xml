@@ -12,17 +12,17 @@
     <type name="Magento\Config\Model\Config\TypePool">
         <arguments>
             <argument name="environment" xsi:type="array">
-                <item name="system/emailsmtp/active" xsi:type="string">1</item>
-                <item name="system/emailsmtp/ssl" xsi:type="string">1</item>
-                <item name="system/emailsmtp/auth" xsi:type="string">1</item>
-                <item name="system/emailsmtp/smtphost" xsi:type="string">1</item>
-                <item name="system/emailsmtp/smtpport" xsi:type="string">1</item>
-                <item name="system/emailsmtp/username" xsi:type="string">1</item>
-                <item name="system/emailsmtp/password" xsi:type="string">1</item>
-                <item name="system/emailsmtp/set_reply_to" xsi:type="string">1</item>
-                <item name="system/emailsmtp/set_from" xsi:type="string">1</item>
-                <item name="system/emailsmtp/custom_from_email" xsi:type="string">1</item>
-                <item name="system/emailsmtp/return_path_email" xsi:type="string">1</item>
+                <item name="albert_email/emailsmtp/active" xsi:type="string">1</item>
+                <item name="albert_email/emailsmtp/ssl" xsi:type="string">1</item>
+                <item name="albert_email/emailsmtp/auth" xsi:type="string">1</item>
+                <item name="albert_email/emailsmtp/smtphost" xsi:type="string">1</item>
+                <item name="albert_email/emailsmtp/smtpport" xsi:type="string">1</item>
+                <item name="albert_email/emailsmtp/username" xsi:type="string">1</item>
+                <item name="albert_email/emailsmtp/password" xsi:type="string">1</item>
+                <item name="albert_email/emailsmtp/set_reply_to" xsi:type="string">1</item>
+                <item name="albert_email/emailsmtp/set_from" xsi:type="string">1</item>
+                <item name="albert_email/emailsmtp/custom_from_email" xsi:type="string">1</item>
+                <item name="albert_email/emailsmtp/return_path_email" xsi:type="string">1</item>
             </argument>
         </arguments>
     </type>
