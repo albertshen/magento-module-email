@@ -1,9 +1,7 @@
 <?php
 /**
  * Copyright © PHP Digital, Inc. All rights reserved.
- * See COPYING.txt for license details.
  */
-
 namespace AlbertMage\Email\Model;
 
 use AlbertMage\Email\Helper\Data;
@@ -20,6 +18,7 @@ use Laminas\Mail\Transport\SmtpOptions;
 
 /**
  * Class Smtp
+ * @author Albert Shen <albertshen1206@gmail.com>
  */
 class Smtp implements TransportInterface
 {

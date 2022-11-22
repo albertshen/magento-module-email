@@ -1,8 +1,6 @@
 <?php
 /**
- *
  * Copyright © PHP Digital, Inc. All rights reserved.
- * See COPYING.txt for license details.
  */
 namespace AlbertMage\Email\Model;
 
@@ -11,8 +9,7 @@ use Magento\Framework\Mail\MessageInterface;
 
 /**
  * Interface for transport.
- * @api
- * @since 100.0.2
+ * @author Albert Shen <albertshen1206@gmail.com>
  */
 interface TransportInterface
 {

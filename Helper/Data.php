@@ -1,14 +1,15 @@
 <?php
 /**
  * Copyright © PHP Digital, Inc. All rights reserved.
- * See COPYING.txt for license details.
  */
-
 namespace AlbertMage\Email\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 
+/**
+ * @author Albert Shen <albertshen1206@gmail.com>
+ */
 class Data extends AbstractHelper
 {
 

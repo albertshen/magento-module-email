@@ -1,11 +1,12 @@
 <?php
 /**
  * Copyright © PHP Digital, Inc. All rights reserved.
- * See COPYING.txt for license details.
  */
-
 namespace AlbertMage\Email\Model;
 
+/**
+ * @author Albert Shen <albertshen1206@gmail.com>
+ */
 class Store
 {
     /** @var int/null  */

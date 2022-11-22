@@ -1,7 +1,6 @@
 <?php
 /**
  * Copyright © PHP Digital, Inc. All rights reserved.
- * See COPYING.txt for license details.
  */
 namespace AlbertMage\Email\Plugin\Mail\Template;
 
@@ -10,6 +9,9 @@ use Magento\Framework\Mail\Template\SenderResolverInterface;
 use Magento\Framework\Mail\Template\TransportBuilderByStore;
 use AlbertMage\Email\Model\Store;
 
+/**
+ * @author Albert Shen <albertshen1206@gmail.com>
+ */
 class TransportBuilderByStorePlugin
 {
     /**

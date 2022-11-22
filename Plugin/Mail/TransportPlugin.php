@@ -1,7 +1,6 @@
 <?php
 /**
  * Copyright © PHP Digital, Inc. All rights reserved.
- * See COPYING.txt for license details.
  */
 namespace AlbertMage\Email\Plugin\Mail;
 
@@ -14,6 +13,9 @@ use Magento\Framework\App\ObjectManager;
 use AlbertMage\Email\Helper\Data;
 use AlbertMage\Email\Model\Smtp;
 
+/**
+ * @author Albert Shen <albertshen1206@gmail.com>
+ */
 class TransportPlugin
 {
     /**

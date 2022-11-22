@@ -1,7 +1,6 @@
 <?php
 /**
  * Copyright © PHP Digital, Inc. All rights reserved.
- * See COPYING.txt for license details.
  */
 namespace AlbertMage\Email\Block\Adminhtml;
 
@@ -16,6 +15,9 @@ use Zend_Mail_Exception;
 use Zend_Mail_Transport_Smtp;
 use Zend_Validate_Exception;
 
+/**
+ * @author Albert Shen <albertshen1206@gmail.com>
+ */
 class ValidateConfig extends Template
 {
 

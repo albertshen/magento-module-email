@@ -1,12 +1,14 @@
 <?php
 /**
  * Copyright © PHP Digital, Inc. All rights reserved.
- * See COPYING.txt for license details.
  */
 namespace AlbertMage\Email\Model\Config\Source;
 
 use Magento\Framework\Option\ArrayInterface;
 
+/**
+ * @author Albert Shen <albertshen1206@gmail.com>
+ */
 class Authtype implements ArrayInterface
 {
     /**

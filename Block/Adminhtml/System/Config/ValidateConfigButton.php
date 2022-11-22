@@ -1,7 +1,6 @@
 <?php
 /**
  * Copyright © PHP Digital, Inc. All rights reserved.
- * See COPYING.txt for license details.
  */
 namespace AlbertMage\Email\Block\Adminhtml\System\Config;
 
@@ -12,8 +11,7 @@ use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Exception\LocalizedException;
 
 /**
- * "Reset to Defaults" button renderer
- *
+ * @author Albert Shen <albertshen1206@gmail.com>
  */
 class ValidateConfigButton extends Field
 {

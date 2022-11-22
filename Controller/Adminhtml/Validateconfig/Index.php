@@ -1,7 +1,6 @@
 <?php
 /**
  * Copyright © PHP Digital, Inc. All rights reserved.
- * See COPYING.txt for license details.
  */
 namespace AlbertMage\Email\Controller\Adminhtml\Validateconfig;
 
@@ -9,6 +8,9 @@ use Magento\Backend\App\Action;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 
+/**
+ * @author Albert Shen <albertshen1206@gmail.com>
+ */
 class Index extends Action
 {
     /**
